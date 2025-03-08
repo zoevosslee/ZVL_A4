@@ -46,11 +46,41 @@
 				Design Decisions and Rationale:
 			</p>
 
+			<h4><strong>1. Normalization by Personnel (Score: +2, Earnest)</strong></h4>
 			<ul>
-				<li>SRG was formed in 2015. A viewer </li>
-				<li>RATIONALE_2</li>
-				<li>RATIONALE_3</li>
+				<li><strong>Summary:</strong> I normalized the data by calculating complaints per officer rather than using total complaints per command unit. This adjustment accounts for differences in unit sizes and provides insight into whether SRG officers receive complaints at a disproportionately high rate. I then used the data dictionary to identify which command unit codes correspond to SRG units, and created one group that is SRG, and another that is all the other non-SRG command units.</li>
+				<li><strong>Why it's earnest:</strong> Without normalization, larger units would appear worse simply due to their size. What is most concerning about SRG is not the sheer number of complaints they receive, but the rate of complaints per officer relative to other units. Despite being smaller in number, SRG officers tend to have a higher rate of complaints per personnel in this dataset.</li>
+				<li><strong>Alternative Considered:</strong> I initially considered presenting total complaints per unit without normalization, as it would have been a straightforward count. However, that approach would have been misleading, as some units are much larger than others. Instead, I normalized the complaints by the number of officers in each unit to make the comparison fairer and more meaningful.</li>
 			</ul>
+		
+			<h4><strong>2. Cutting the Axis at 0.8 (Score: -0.5, Deceptive)</strong></h4>
+			<ul>
+				<li><strong>Summary:</strong> I set the lower limit of the y-axis at 0.8 complaints per officer instead of allowing it to scale from zero. This makes the differences between SRG and non-SRG units stand out more.</li>
+				<li><strong>Why it's a bit deceptive:</strong> By truncating the axis, the gaps between units appear more extreme than they actually are. While SRG’s complaint rate is higher than that of non-SRG units, cutting the axis artificially amplifies the perceived difference.</li>
+				<li><strong>Alternative Considered:</strong> An axis starting at zero would have been more “accurate” in terms of seeing the actual scaled difference in complaints for the two unit groups. However, I opted for a truncated axis to amplify the differences.</li>
+			</ul>
+		
+			<h4><strong>3. Filtering Data to 2015 Onward (Score: +2, Earnest)</strong></h4>
+			<ul>
+				<li><strong>Summary:</strong> I filtered the dataset to only include complaints from 2015 onward, so that the data reflects the time period after SRG was formed.</li>
+				<li><strong>Why it's earnest:</strong> Without this filter, older NYPD units would accumulate complaints over a longer period, making them appear worse in total numbers. Since SRG was only established in 2015, comparing it to units with decades of recorded complaints would skew the results.</li>
+				<li><strong>Alternative Considered:</strong> I initially considered leaving the full dataset unfiltered because some officers could be transferred into SRG and have had past complaints. However, since I was focusing on findings related to the current makeup of SRG, I thought it would be inaccurate to assume that officers from the 1990s or early 2000s would necessarily still be on the force. I chose to filter to include only data from 2015 onward to reflect complaints made while SRG has been in existence. I acknowledge that this decision may skew the complaints-per-officer rate downward, since it excludes complaints filed against officers before 2015 who may have later moved into SRG.</li>
+			</ul>
+		
+			<h4><strong>4. Use of "Command Now (Group)" Metric (Score: +2, Earnest)</strong></h4>
+			<ul>
+				<li><strong>Summary:</strong> I used "Command Now (Group)" rather than command at time of complaint because I wanted to account for the fact that officers with a history of complaints may be more likely to join SRG. It also makes my visualization reflect the nature of the unit in its most recent state documented in the data, in 2020.</li>
+				<li><strong>Why it's earnest:</strong> SRG officers are frequently transferred from other NYPD divisions, which means their past complaints may have been accrued under different units. Using "Command Now" ensures that I am evaluating the officers who are currently part of SRG.</li>
+				<li><strong>Alternative Considered:</strong> I initially considered using "Command at Time of Complaint," which would reflect where officers were stationed at the time of each incident. However, this would fail to capture the current makeup of SRG, where officers may be transferred in from other units. "Command Now" provides a more policy-relevant snapshot of the command unit’s makeup.</li>
+			</ul>
+		
+			<h4><strong>5. Adjusting Color Palette to Draw Attention to SRG (Score: +1, Earnest)</strong></h4>
+			<ul>
+				<li><strong>Summary:</strong> I selected a red-based palette, using the same red tone for both SRG and non-SRG units to avoid overly encoding meaning into color choice. I made the non-SRG unit data lighter, to draw the eye to the SRG data.</li>
+				<li><strong>Why it's earnest:</strong> Color influences how viewers interpret data and is loaded with cultural associations. I chose not to pick a color contrast pairing (like blue vs. red, which could invoke “bad” and “good,” or in the case of blue, could make people think about colors associated with the police). I aimed to reduce the potential for color bias while still drawing attention to SRG.</li>
+				<li><strong>Alternative Considered:</strong> I considered using a more aggressive contrast, such as bright red for SRG and dark gray for non-SRG, which could have dramatically emphasized the difference. However, I wanted to use coloring that encoded a negative value judgment about the misbehavior represented in all civilian complaints, regardless of what unit the officers are in—so I opted for shades of red to symbolize both SRG and non-SRG units.</li>
+			</ul>
+		
     </section>
 
     <section>
@@ -67,17 +97,62 @@
 				Design Decisions and Rationale:
 			</p>
 
+			<h4><strong>1. Presenting Total Complaints (Score: -2, Deceptive)</strong></h4>
 			<ul>
-				<li>RATIONALE_1</li>
-				<li>RATIONALE_2</li>
-				<li>RATIONALE_3</li>
+				<li><strong>Rationale:</strong> I calculated the total number of complaints per NYPD command unit and presented it as a direct comparison between SRG units (as one group) and non-SRG units.</li>
+				<li><strong>Why it's deceptive:</strong> This approach is misleading because there are six SRG command units and dozens of non-SRG units. However, this information about the number of SRG vs. non-SRG units is not communicated, leading to a false understanding of the comparison.</li>
+				<li><strong>Alternative Considered:</strong> I was curious about what the visual would look like if I normalized not by personnel, but by command unit. However, because SRG does have higher civilian complaint rates, this approach did not effectively argue against my proposition.</li>
 			</ul>
+		
+			<h4><strong>2. No Mention of Time (Score: -1.5, More Deceptive)</strong></h4>
+			<ul>
+				<li><strong>Rationale:</strong> The SRG unit was only formed in 2015, but the dataset includes complaints without a time filter. This means that officers from long-established units accumulate complaints over a much longer period, whereas SRG officers only have complaints recorded post-2015.</li>
+				<li><strong>Why it's deceptive:</strong> By not filtering complaints to only include years after SRG’s formation, the visualization unintentionally skews the perception of complaint frequency. It suggests that SRG’s total complaints can be fairly compared to older units, even though those units have had far more time to accumulate complaints.</li>
+				<li><strong>Alternative Considered:</strong> Applying a time filter from 2015 onward would have made the comparison more valid, but this would have reduced the total dataset size. I chose to not filter, nor communicate what year SRG was started, to intentionally skew the results.</li>
+			</ul>
+		
+			<h4><strong>3. Color Choices (Score: -1, Deceptive)</strong></h4>
+			<ul>
+				<li><strong>Rationale:</strong> I selected red and blue for the visualization, with SRG bars colored in blue. This subtly encodes meaning within the colors, playing on associations people may have with authority, policing, and values.</li>
+				<li><strong>Why it's deceptive:</strong> Blue is often associated with trust and stability, making SRG seem more legitimate or less aggressive, despite the argument being made. Red, by contrast, is often linked to urgency, warning, or danger, which may unconsciously shape how viewers interpret non-SRG units.</li>
+				<li><strong>Alternative Considered:</strong> Using neutral colors or a single-color gradient would have reduced unintended associations, but I opted for blue and red to make differences more visually distinct. This choice helps highlight SRG but is also intended to shape how viewers see the data.</li>
+			</ul>
+		
     </section>
 
     <section>
       <h2>Final Reflection</h2>
 
-      <p>SRG is known as being one of the most violent NYPD divisions. </p>
+	  <p>Working on this exercise made me <strong>hyper-aware</strong> of the power given to the person working with data. Dozens of micro-decisions shaped the final visualizations:</p>
+    
+	  <ul>
+		  <li>What filters to apply</li>
+		  <li>What values to exclude</li>
+		  <li>How to normalize the data</li>
+		  <li>How to label axes</li>
+		  <li>Where to cut off scales</li>
+		  <li>What colors to use</li>
+		  <li>What disclaimers to include (or exclude)</li>
+	  </ul>
+  
+	  <p>As someone with experience working with data, I typically notice when a dataset lacks normalization. However, I have caught myself at times scrolling through an article with data visualizations, reading too quickly to pay attention to critical methodological details. Not normalizing data is one of the easiest ways to manipulate viewers, as it can create misleading comparisons that appear valid at a glance.</p>
+  
+	  <h4><strong>Two Different Narratives from the Same Data</strong></h4>
+  
+	  <p>For instance, the same simple bar chart I created can communicate completely different narratives:</p>
+	  
+	  <ul>
+		  <li><strong>In the first visualization:</strong> Officers in SRG have notably higher rates of complaints per officer than personnel in non-SRG units. This supports arguments for disbanding SRG by illustrating systemic misconduct within the unit.</li>
+		  <li><strong>In the second visualization:</strong> SRG appears less frequently complained about than non-SRG units.</li>
+	  </ul>
+
+	  <h4><strong>Lessons Learned</strong></h4>
+  
+	  <p>This exercise demonstrated how much control data analysts + visualizers have over perception. It also made me think about how much information is processed subconsciously and how things like bar lengths and color can shape interpretation. These design choices can be powerful tools for guiding perception, but they also make it easier to misinform viewers. Today, many people are inundated with data visuals on social media and the news -- making it easier for visuals that are consumed in a fast fashion to mislead, whether by accident or design.</p>
+  
+	  <p>It made me realize that what is left unsaid: time, normalization methods, missing data, or data limitations, is just as important as what is shown. Being aware of these gaps is something I will carry into my future work.</p>
+	  <p>Finally, I was uneasy at points working with this data and communicating a story about police violence that, as a nature of the limits of this assignment, does not include the voices of those impacted first hand. The details in the dataset speak to just the tip of an iceberg's worth of abuses of power. I saw this dataset as an archive, with each complaint speaking to a much larger history of a person who was harmed by policing. I wonder how my future work can do a better job at communicating the humanity of those whose stories it encodes. </p>
+  
     </section>
 	</main>
 
